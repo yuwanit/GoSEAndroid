@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="translucent_black">#80000000</color>
+    <color name="bg_login">#cccccc</color>
+    <color name="bg_dialog_write_review">#D0CFCF</color>
+</resources>

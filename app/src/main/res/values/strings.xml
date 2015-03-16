@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GoSE</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_th">ไทย</string>
+    <string name="menu_usa">United States America</string>
+    <string name="menu_logout">Logout...</string>
+    <string name="dummy_section_text">Coming Soon</string>
+    <string name="demo_external_activity">Demo External Activity</string>
+    <string name="demo_collection">Demo Collection</string>
+    <string name="search">Search</string>
+    <string name="logo_gose">Logo GoSE</string>
+    <string name="no_list">No information</string>
+    <string name="location">Location :</string>
+    <string name="head_agency">Head agency :</string>
+    <string name="tel">Tel :</string>
+    <string name="fax">Fax :</string>
+    <string name="website">Website :</string>
+    <string name="offices_hours">Offices hours :</string>
+    <string name="title_activity_connect_user">ConnectUser</string>
+    <string name="title_activity_post_review">PostReviewActivity</string>
+
+    <string name="facebook_app_id">1615450702008202</string>
+    <string name="title_facebook_login">GoSE login with Facebook</string>
+    <string name="google_plus_id">AIzaSyA-CFXh0XfG4U0ETMa8j-Vh3l4qCyMNkw8</string>
+    <string name="login">Login</string>
+    <string name="or">OR</string>
+    <string name="evaluation">Evaluation</string>
+    <string name="cancel">Cancel</string>
+    <string name="write_review">Write review</string>
+    <string name="review">Review</string>
+    <string name="post">Post</string>
+    <string name="progress_please_wait">Please wait...</string>
+    <string name="progress_processing">Processing...</string>
+    <string name="no_review">No Review</string>
+    <string name="open_title">Open :</string>
+    <string name="tel_title">Tel :</string>
+</resources>

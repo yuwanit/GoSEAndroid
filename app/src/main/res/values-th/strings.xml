@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GoSE</string>
+    <string name="action_settings">ตั้งค่า</string>
+    <string name="menu_th">ไทย</string>
+    <string name="menu_usa">United States America</string>
+    <string name="menu_logout">ออกจากระบบ</string>
+    <string name="dummy_section_text">เร็วๆนี้</string>
+    <string name="search">ค้นหา</string>
+    <string name="logo_gose">โลโก้ GoSE</string>
+    <string name="no_list">ไม่พบข้อมูล</string>
+    <string name="location">ที่ตั้ง :</string>
+    <string name="head_agency">หัวหน้าหน่วยงาน :</string>
+    <string name="tel">เบอร์โทรศัพท์ :</string>
+    <string name="fax">โทรสาร :</string>
+    <string name="website">เว็บไซต์ :</string>
+    <string name="offices_hours">เวลาการทำการ :</string>
+    <string name="facebook_app_id">1615450702008202</string>
+    <string name="title_facebook_login">เข้าสู่ระบบด้วย Facebook</string>
+    <string name="google_plus_id">AIzaSyA-CFXh0XfG4U0ETMa8j-Vh3l4qCyMNkw8</string>
+    <string name="login">เข้าสู่ระบบ</string>
+    <string name="or">หรือ</string>
+    <string name="evaluation">ประเมิน</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="write_review">แสดงความคิดเห็น</string>
+    <string name="review">ความคิดเห็น</string>
+    <string name="post">โพส</string>
+    <string name="progress_please_wait">กรุณารอซักครู่...</string>
+    <string name="progress_processing">กำลังดำเนินการ...</string>
+    <string name="no_review">ไม่มีความคิดเห็น</string>
+    <string name="open_title">เวลาทำการ :</string>
+    <string name="tel_title">เบอร์โทร :</string>
+</resources>

@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+    <item android:id="@+id/menu_th"
+        android:title="@string/menu_th"
+        android:icon="@drawable/thailand"
+        android:showAsAction="always"
+        tools:ignore="AppCompatResource"/>
+
+    <item android:id="@+id/menu_usa"
+        android:title="@string/menu_usa"
+        android:icon="@drawable/united_states_of_america_usa"
+        android:showAsAction="always"
+        tools:ignore="AppCompatResource" />
+
+</menu>

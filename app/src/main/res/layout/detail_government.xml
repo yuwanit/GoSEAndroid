@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/translucent_black"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@android:color/transparent"
+            android:scrollbars="none">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/layout_government_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingTop="55dp">
+
+                    <ImageView
+                        android:id="@+id/img_government"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_img_government"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="400px"
+                        android:layout_gravity="center" />
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/tv_government"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/dialog_padding"
+                            android:textSize="9pt"
+                            android:textStyle="bold" />
+
+                        <TableRow android:padding="@dimen/detail_government_padding">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/location"
+                                android:textSize="@dimen/dialog_font"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_location"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:textSize="@dimen/dialog_font" />
+
+                        </TableRow>
+
+                        <TableRow android:padding="@dimen/detail_government_padding">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/head_agency"
+                                android:textSize="@dimen/dialog_font"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:id="@+id/tv_head_agency"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:textSize="@dimen/dialog_font" />
+                        </TableRow>
+
+                        <TableRow android:padding="@dimen/detail_government_padding">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/offices_hours"
+                                android:textSize="@dimen/dialog_font"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_offices_hours"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:inputType="number"
+                                android:textSize="@dimen/dialog_font" />
+                        </TableRow>
+
+                        <TableRow android:padding="@dimen/detail_government_padding">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tel"
+                                android:textSize="@dimen/dialog_font"
+                                android:textStyle="bold" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tv_tel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2"
+                                    android:inputType="number"
+                                    android:textSize="@dimen/dialog_font" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="25dp"
+                                    android:layout_toRightOf="@+id/tv_tel"
+                                    android:src="@android:drawable/sym_call_outgoing" />
+
+                            </RelativeLayout>
+
+                        </TableRow>
+
+                        <TableRow android:padding="@dimen/detail_government_padding">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/fax"
+                                android:textSize="@dimen/dialog_font"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_fax"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/dialog_font" />
+                        </TableRow>
+
+                        <TableRow android:padding="@dimen/detail_government_padding">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/website"
+                                android:textSize="@dimen/dialog_font"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_website"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/dialog_font" />
+                        </TableRow>
+
+                    </TableLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_show_evaluation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_government_detail">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="400px"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/star" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_evaluation_rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="35dp"
+                            android:textSize="14pt" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_total_people"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="4dp"
+                                android:textColor="@android:color/holo_green_dark"
+                                android:textSize="6pt" />
+
+                            <ImageView
+                                android:layout_width="40px"
+                                android:layout_height="40px"
+                                android:src="@drawable/user" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_show_evaluation"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/bg_login"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:visibility="invisible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/login"
+                        android:textSize="13pt"
+                        android:textStyle="bold" />
+
+                    <TextView style="@style/ReviewLine" />
+
+                    <com.google.android.gms.common.SignInButton
+                        android:id="@+id/button_sign_in_google"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:text="@string/or"
+                        android:textSize="9pt" />
+
+                    <com.facebook.widget.LoginButton
+                        android:id="@+id/button_connect_facebook"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        facebook:confirm_logout="false"
+                        facebook:fetch_user_info="true" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_evaluation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layout_show_evaluation"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/evaluation_bg"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:visibility="visible">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/img_edit_evaluation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:src="@drawable/edit_evaluation_icon"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_edit_evaluation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/button_evaluation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/evaluation"
+                            android:textSize="8pt"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+
+                        <Button
+                            android:id="@+id/button_cancel_evaluation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cancel"
+                            android:textSize="8pt"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_show_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layout_login"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="@string/review"
+                            android:textSize="11pt" />
+
+                        <Button
+                            android:id="@+id/button_write_review"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@android:drawable/ic_menu_edit"
+                            android:text="@string/write_review"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <TextView style="@style/ReviewLine" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_reviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ProgressBar
+                            android:id="@+id/progressBar_reviews"
+                            style="?android:attr/progressBarStyleInverse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
+
+                        <ListView
+                            android:id="@+id/listView_reviews"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:id="@+id/tv_no_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_margin="20dp"
+                            android:text="@string/no_review"
+                            android:textSize="9pt"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_category"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/category_bg"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar_img_category"
+                        style="?android:attr/progressBarStyleInverse"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="50dp"
+                    android:src="@drawable/favorite_icon_off" />
+
+            </RelativeLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

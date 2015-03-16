@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/img_user"
+            android:layout_width="250px"
+            android:layout_height="250px"
+            android:src="@drawable/test_user"/>
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/img_user"
+            android:textSize="9pt"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_username"
+            android:layout_alignStart="@+id/tv_username"
+            android:textSize="5pt"
+            tools:ignore="RtlCompat" />
+
+        <TextView
+            android:id="@+id/tv_show_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_username"
+            android:layout_alignStart="@+id/tv_username"
+            android:layout_marginTop="20dp"
+            tools:ignore="RtlCompat" />
+
+        <ImageButton
+            android:id="@+id/button_yes"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/tv_show_review"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/yes"
+            tools:ignore="RtlCompat" />
+
+</RelativeLayout>

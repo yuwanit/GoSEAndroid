@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_selector"
+    android:orientation="horizontal"
+    android:padding="5dip">
+    <!-- ListRow Left side Thumbnail image -->
+
+    <ImageView
+        android:id="@+id/imgGovernment"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:layout_centerVertical="true"
+        android:layout_margin="3dip" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_government"
+        style="?android:attr/progressBarStyleInverse"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:layout_centerVertical="true"
+        android:layout_margin="3dip"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/government_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="80dip"
+        android:paddingBottom="10dip"
+        android:textColor="#040404"
+        android:textSize="14dip"
+        android:textStyle="bold"
+        android:typeface="sans" />
+</RelativeLayout>
