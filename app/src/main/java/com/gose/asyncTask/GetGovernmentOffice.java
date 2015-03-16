@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import com.gose.DetailGovernment;
 import com.gose.R;
-import com.gose.adapter.ImageAdapterForSearch;
+import com.gose.adapters.ImageAdapterForSearch;
 import com.gose.httpclient.JsonFormPost;
 
 import org.apache.http.NameValuePair;

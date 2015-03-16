@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.gose.GetProfile.GetFacebookProfileFromId;
 import com.gose.GetProfile.GetGooglePlusProfileFromId;
-import com.gose.adapter.ReviewAdapter;
+import com.gose.adapters.ReviewAdapter;
 import com.gose.httpclient.JsonFormPost;
 
 import org.apache.http.NameValuePair;

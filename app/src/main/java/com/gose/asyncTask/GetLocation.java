@@ -191,29 +191,6 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
             }
         });
 
-//         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//
-//             @Override
-//             public void onMapClick(LatLng arg0) {
-//
-//                 // Creating an instance of MarkerOptions to set position
-//                 MarkerOptions markerOptions = new MarkerOptions();
-//
-//                 // Setting position on the MarkerOptions
-//                 markerOptions.position(arg0);
-//
-//                 // Animating to the currently touched position
-//                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(arg0));
-//
-//                 // Adding marker on the GoogleMap
-//                 Marker marker = googleMap.addMarker(markerOptions);
-//
-//                 // Showing InfoWindow on the GoogleMap
-//                 marker.showInfoWindow();
-//
-//             }
-//         });
-
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
             @Override
