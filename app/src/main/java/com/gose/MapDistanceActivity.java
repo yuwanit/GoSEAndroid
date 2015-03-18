@@ -1,18 +1,17 @@
 package com.gose;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,18 +21,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.gose.asyncTask.GetGovernmentDistance;
 import com.gose.route.GPSTracker;
+import com.gose.route.Navigator;
 import com.gose.session.GovernmentOffice;
 
-/**
- * Created by Yuwanit on 1/27/2015.
- */
-public class RouteSectionFragment extends Fragment implements LocationListener, GoogleMap.OnMapLoadedCallback {
 
-    private static String TAG = RouteSectionFragment.class.getSimpleName();
+public class MapDistanceActivity extends FragmentActivity implements LocationListener, GoogleMap.OnMapLoadedCallback {
 
-    private View view;
+    private static String TAG = MapDistanceActivity.class.getSimpleName();
+
     private GoogleMap googleMap;
     private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
 
@@ -44,39 +40,20 @@ public class RouteSectionFragment extends Fragment implements LocationListener, 
     // GPSTracker class
     private GPSTracker gps;
     private LatLng latLngCurrent;
-
-    public static RouteSectionFragment getInstance() {
-        if (instance == null) {
-            instance = new RouteSectionFragment();
-        }
-        return instance;
-    }
+    private LatLng latLngDestination;
+    private String governmentName;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(view != null) {
-            return view;
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map_distance);
 
-        view = (RelativeLayout) inflater.inflate(R.layout.fragment_section_route, container, false);
+        setArguments();
 
-        et_destination = (AutoCompleteTextView) view.findViewById(R.id.et_destination);
-        ArrayAdapter adapter = new ArrayAdapter
-                (getActivity(),android.R.layout.simple_list_item_1, governmentOffice.getGovernmentNameList());
-        et_destination.setAdapter(adapter);
-
-        btn_distance = (Button) view.findViewById(R.id.btn_distance);
-        btn_distance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new GetGovernmentDistance(getActivity(), et_destination.getText().toString(), googleMap).execute();
-            }
-        });
-
-        googleMap = ((SupportMapFragment) MainActivity.fragmentManager.findFragmentById(R.id.route_map)).getMap();
+        googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_distance)).getMap();
         googleMap.setMyLocationEnabled(true);
 
-        gps = new GPSTracker(getActivity());
+        gps = new GPSTracker(this);
 
         // check if GPS enabled
         if(gps.canGetLocation()){
@@ -93,7 +70,7 @@ public class RouteSectionFragment extends Fragment implements LocationListener, 
         }
 
         // Acquire a reference to the system Location Manager
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
@@ -123,12 +100,86 @@ public class RouteSectionFragment extends Fragment implements LocationListener, 
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
+        GPSTracker gps = new GPSTracker(this);
+
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+
+            latLngCurrent = new LatLng(latitude, longitude);
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
+        if (latLngCurrent != null && latLngDestination != null) {
+
+            googleMap.clear();
+
+            CameraUpdate center = CameraUpdateFactory.newLatLng(latLngCurrent);
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+            googleMap.moveCamera(center);
+            googleMap.animateCamera(zoom);
+
+            googleMap.addMarker(new MarkerOptions()
+                    .icon(
+                            BitmapDescriptorFactory.fromResource(R.drawable.goverment_icon))
+                    .position(latLngDestination)
+                    .title(governmentName)).showInfoWindow();
+
+            Navigator nav = new Navigator(googleMap, latLngCurrent, latLngDestination);
+            nav.findDirections(true);
+            nav.setPathColor(Color.parseColor("#f94a32"));
+            nav.setPathBorderColor(Color.parseColor("#ff0000"));
+        } else {
+            Toast.makeText(this, "Can not found your place.", Toast.LENGTH_SHORT).show();
+        }
+
         CameraUpdate center = CameraUpdateFactory.newLatLng(latLngCurrent);
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
         googleMap.moveCamera(center);
         googleMap.animateCamera(zoom);
+    }
 
-        return view;
+    private void setArguments() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+
+            governmentName = extras.getString("imageDesc");
+            Double latitude = Double.parseDouble(extras.getString("latitude"));
+            Double longitude = Double.parseDouble(extras.getString("longitude"));
+
+            latLngDestination = new LatLng(latitude, longitude);
+
+            extras.clear();
+        }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_map_distance, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -137,33 +188,22 @@ public class RouteSectionFragment extends Fragment implements LocationListener, 
     }
 
     @Override
-    public void onDestroyView() {
-        if (view != null) {
-            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
-            if (parentViewGroup != null) {
-                parentViewGroup.removeAllViews();
-            }
-        }
-        super.onDestroyView();
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
 
-    double latitude_current = location.getLatitude();
+        double latitude_current = location.getLatitude();
 
-    // Getting longitude of the current location
-    double longitude_current = location.getLongitude();
+        // Getting longitude of the current location
+        double longitude_current = location.getLongitude();
 
-    // Creating a LatLng object for the current location
-    latLngCurrent = new LatLng(latitude_current, longitude_current);
+        // Creating a LatLng object for the current location
+        latLngCurrent = new LatLng(latitude_current, longitude_current);
 
-    // Showing the current location in Google Map
-    googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngCurrent));
+        // Showing the current location in Google Map
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngCurrent));
 
-    // Zoom in the Google Map
-    googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-}
+        // Zoom in the Google Map
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+    }
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 

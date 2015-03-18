@@ -55,6 +55,7 @@
         </LinearLayout>
 
     </RelativeLayout>
+
     <fragment
         android:id="@+id/route_map"
         android:layout_width="match_parent"

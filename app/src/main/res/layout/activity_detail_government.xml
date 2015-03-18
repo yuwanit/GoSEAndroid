@@ -459,6 +459,15 @@
                     android:layout_marginTop="50dp"
                     android:src="@drawable/favorite_icon_off" />
 
+                <ImageView
+                    android:id="@+id/img_route"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/layout_government_detail"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="2dp"
+                    android:src="@drawable/route"/>
+
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

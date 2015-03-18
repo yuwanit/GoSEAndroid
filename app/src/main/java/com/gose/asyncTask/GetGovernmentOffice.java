@@ -129,7 +129,7 @@ public class GetGovernmentOffice extends AsyncTask<String, Integer, String> {
                                 .get(position).get("thai_name"));
                         intent.putExtra("location", arrayList.get(position)
                                 .get("location"));
-                        intent.putExtra("imagepath", arrayList
+                        intent.putExtra("ImagePath", arrayList
                                 .get(position).get("ImagePath"));
                         intent.putExtra("head_agency",
                                 arrayList.get(position).get("head_agency"));

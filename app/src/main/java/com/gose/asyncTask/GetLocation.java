@@ -317,7 +317,7 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                                 intent.putExtra("imageDesc", imageDesc);
                                 intent.putExtra("thai_name", governmentNameThai);
                                 intent.putExtra("location", location);
-                                intent.putExtra("imagepath", imagePath);
+                                intent.putExtra("ImagePath", imagePath);
                                 intent.putExtra("head_agency", head_agency);
                                 intent.putExtra("thai_head_agency", thai_head_agency);
                                 intent.putExtra("offices_hours_start", offices_hours_start);

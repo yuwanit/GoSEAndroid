@@ -50,4 +50,7 @@
         <item>@color/custom_theme_primary</item> <!-- main color of your theme -->
         <item>@color/custom_theme_light</item> <!-- really much lighter color of main color -->
     </integer-array>
+    <string name="title_activity_map_distance">GoSE Navigation</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

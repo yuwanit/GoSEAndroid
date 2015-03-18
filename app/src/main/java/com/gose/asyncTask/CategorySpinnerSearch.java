@@ -80,6 +80,7 @@ public class CategorySpinnerSearch extends AsyncTask<String, Integer, String> {
         List<String> categoryNameList = new ArrayList<String>();
         categoryIdList = new ArrayList<String>();
         categoryNameList.add("All");
+        categoryIdList.add("0");
         for (int i = 0; i < arrayList.size(); i++){
             categoryNameList.add(arrayList.get(i).get("category_name"));
             categoryIdList.add(arrayList.get(i).get("category_id"));
