@@ -99,6 +99,19 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
     private boolean status_favorite = false;
     private DatabaseHelper databaseHelper;
 
+    private Session.StatusCallback statusCallback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state,
+                         Exception exception) {
+            onSessionStateChange(session, state, exception);
+            if (state.isOpened()) {
+                Log.d(TAG, "Facebook session opened.");
+            } else if (state.isClosed()) {
+                Log.d(TAG, "Facebook session closed.");
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,8 +192,8 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
 
         new ShowReview(this, governmentId, listView_reviews, progressBar_reviews, tv_no_review).execute();
 
-        new ShowEvaluation(this, governmentId, ratingBar, button_evaluation, img_edit_evaluation, tv_evaluation_rate, tv_total_people,
-                layout_show_evaluation, layout_evaluation).execute();
+//        new ShowEvaluation(this, governmentId, ratingBar, button_evaluation, img_edit_evaluation, tv_evaluation_rate, tv_total_people,
+//                layout_show_evaluation, layout_evaluation).execute();
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
@@ -277,18 +290,6 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
         });
     }
 
-    private Session.StatusCallback statusCallback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state,
-                         Exception exception) {
-            if (state.isOpened()) {
-                Log.d(TAG, "Facebook session opened.");
-            } else if (state.isClosed()) {
-                Log.d(TAG, "Facebook session closed.");
-            }
-        }
-    };
-
     @Override
     public void onResume() {
         super.onResume();
@@ -343,7 +344,6 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
         super.onSaveInstanceState(outState);
         uiHelper.onSaveInstanceState(outState);
     }
-
 
     private void onSessionStateChange(final Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
@@ -437,6 +437,9 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
             layout_login.setVisibility(View.VISIBLE);
             button_write_review.setVisibility(View.GONE);
         }
+
+        new ShowEvaluation(this, governmentId, ratingBar, button_evaluation, img_edit_evaluation, tv_evaluation_rate, tv_total_people,
+                layout_show_evaluation, layout_evaluation).execute();
     }
 
     @Override

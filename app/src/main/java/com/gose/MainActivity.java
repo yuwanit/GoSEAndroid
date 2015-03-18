@@ -193,7 +193,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 Locale.setDefault(locale);
                 config = new Configuration();
                 config.locale = locale;
-                getResources().updateConfiguration(config, null);
+                getBaseContext().getResources().updateConfiguration(config, null);
                 return true;
             case R.id.menu_usa:
                 Log.e(TAG, "language english");
