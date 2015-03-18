@@ -3,4 +3,10 @@
     <color name="translucent_black">#80000000</color>
     <color name="bg_login">#cccccc</color>
     <color name="bg_dialog_write_review">#D0CFCF</color>
+
+    <!-- CREATE A COLOR ARRAY IN COLORS XML -->
+    <color name="custom_theme_darker">#ad843d</color>
+    <color name="custom_theme_dark">#d4a14a</color>
+    <color name="custom_theme_primary">#fbbf58</color>
+    <color name="custom_theme_light">#fae8c8</color>
 </resources>

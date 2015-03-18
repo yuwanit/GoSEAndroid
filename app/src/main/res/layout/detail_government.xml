@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
@@ -317,23 +318,35 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <Button
+                        <com.cengalabs.flatui.views.FlatButton
                             android:id="@+id/button_evaluation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/evaluation"
                             android:textSize="8pt"
                             android:textStyle="bold"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            flatui:fl_theme="@array/sky"
+                            flatui:fl_customBackgroundColor="#3498db"
+                            flatui:fl_touchEffect="fl_ripple"
+                            flatui:fl_blockButtonEffectHeight="3dp" />
 
-                        <Button
+                        <TextView
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content" />
+
+                        <com.cengalabs.flatui.views.FlatButton
                             android:id="@+id/button_cancel_evaluation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/cancel"
                             android:textSize="8pt"
                             android:textStyle="bold"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            flatui:fl_theme="@array/blood"
+                            flatui:fl_customBackgroundColor="#3498db"
+                            flatui:fl_touchEffect="fl_ripple"
+                            flatui:fl_blockButtonEffectHeight="3dp"/>
 
                     </LinearLayout>
 
@@ -361,11 +374,16 @@
                             android:text="@string/review"
                             android:textSize="11pt" />
 
-                        <Button
+                        <com.cengalabs.flatui.views.FlatButton
                             android:id="@+id/button_write_review"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
                             android:drawableLeft="@android:drawable/ic_menu_edit"
+                            flatui:fl_theme="@array/orange"
+                            flatui:fl_customBackgroundColor="#3498db"
+                            flatui:fl_touchEffect="fl_ripple"
+                            flatui:fl_blockButtonEffectHeight="3dp"
                             android:text="@string/write_review"
                             android:visibility="gone" />
 

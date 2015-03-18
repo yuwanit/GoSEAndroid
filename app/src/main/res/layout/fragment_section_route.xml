@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg">
@@ -6,67 +7,50 @@
     <RelativeLayout
         android:id="@+id/layoutMenu"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:gravity="center" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/layoutSearch"
+                android:id="@+id/layoutRoute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:layout_weight="2"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/editText_start"
+                <AutoCompleteTextView
+                    android:id="@+id/et_destination"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/edit_route"
                     android:textColor="@android:color/black"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"/>
 
-                <EditText
-                    android:id="@+id/editText_end"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/edit_route"
-                    android:textColor="@android:color/black"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_gravity="center"/>
 
-                <ImageView
-                    android:id="@+id/imageView_getDistance"
+                <com.cengalabs.flatui.views.FlatButton
+                    android:id="@+id/btn_distance"
+                    android:textSize="10pt"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/getdistance"/>
-
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    flatui:fl_theme="@array/candy"
+                    flatui:fl_customBackgroundColor="#3498db"
+                    flatui:fl_touchEffect="fl_ripple"
+                    flatui:fl_blockButtonEffectHeight="3dp"
+                    android:text="@string/get_distance"/>
 
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/imageView_switch"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="25dp"
-                android:layout_marginRight="15dp"
-                android:src="@drawable/switch_icon"/>
 
         </LinearLayout>
 
@@ -75,7 +59,7 @@
         android:id="@+id/route_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layoutMenu"
-        class="com.google.android.gms.maps.SupportMapFragment"/>
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_below="@+id/layoutMenu" />
 
 </RelativeLayout>

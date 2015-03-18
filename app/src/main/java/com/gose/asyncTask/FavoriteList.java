@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.gose.DetailGovernment;
 import com.gose.R;
-import com.gose.adapters.ImageAdapterForSearch;
 import com.gose.httpclient.JsonFormPost;
 
 import org.apache.http.NameValuePair;
@@ -26,23 +22,18 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Yuwanit on 2/26/2015.
+ * Created by APATTA-PU on 16/3/2558.
  */
-public class GetGovernmentOffice extends AsyncTask<String, Integer, String> {
-
-    private static String TAG = GetGovernmentOffice.class.getSimpleName();
+public class FavoriteList extends AsyncTask<String, Integer, String> {
 
     private ProgressDialog progressDialog;
     private Context context;
-    private String keyword_search, category_id;
-    private ListView listView;
+    private int goverment_id;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
 
-    public GetGovernmentOffice(Context context, String keyword_search, String category_id, ListView listView){
+    public FavoriteList(Context context, int goverment_id) {
         this.context = context;
-        this.keyword_search = keyword_search;
-        this.category_id = category_id;
-        this.listView = listView;
+        this.goverment_id = goverment_id;
     }
 
     @Override
@@ -62,13 +53,11 @@ public class GetGovernmentOffice extends AsyncTask<String, Integer, String> {
 
         JsonFormPost post = new JsonFormPost();
 
-        String url = "http://gose.esy.es//administrator/json/search_government.html";
+        String url = "http://gose.esy.es/administrator/json/search_government_by_id.html";
 
         List<NameValuePair> nameValuePairs = new ArrayList<>();
 
-        nameValuePairs.add(new BasicNameValuePair("category_id", category_id));
-        Log.e(TAG, "category_id >>> " + category_id);
-        nameValuePairs.add(new BasicNameValuePair("keyword_search", keyword_search));
+        nameValuePairs.add(new BasicNameValuePair("government_id", String.valueOf(goverment_id)));
 
         String result = post.connect(url, nameValuePairs);
 
@@ -111,72 +100,66 @@ public class GetGovernmentOffice extends AsyncTask<String, Integer, String> {
                                 + jsonObject2.getString("category_image"));
 
                 arrayList.add(hashMap);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> arg0, View arg1,
-                                            int position, long arg3) {
-
-                        Intent intent = new Intent(context,
-                                DetailGovernment.class);
-
-                        intent.putExtra("government_id", arrayList
-                                .get(position).get("government_id"));
-                        intent.putExtra("imageDesc", arrayList
-                                .get(position).get("ImageDesc"));
-                        intent.putExtra("thai_name", arrayList
-                                .get(position).get("thai_name"));
-                        intent.putExtra("location", arrayList.get(position)
-                                .get("location"));
-                        intent.putExtra("imagepath", arrayList
-                                .get(position).get("ImagePath"));
-                        intent.putExtra("head_agency",
-                                arrayList.get(position).get("head_agency"));
-                        intent.putExtra("thai_head_agency",
-                                arrayList.get(position).get("thai_head_agency"));
-                        intent.putExtra("offices_hours_start", arrayList
-                                .get(position).get("offices_hours_start"));
-                        intent.putExtra(
-                                "offices_hours_end",
-                                arrayList.get(position).get(
-                                        "offices_hours_end"));
-                        intent.putExtra("latitude", arrayList.get(position)
-                                .get("latitude"));
-                        intent.putExtra("longitude", arrayList
-                                .get(position).get("longitude"));
-                        intent.putExtra("category_name",
-                                arrayList.get(position)
-                                        .get("category_name"));
-                        intent.putExtra("thai_category_name",
-                                arrayList.get(position)
-                                        .get("thai_category_name"));
-                        intent.putExtra("category_image",
-                                arrayList.get(position)
-                                        .get("category_image"));
-                        intent.putExtra("tel",
-                                arrayList.get(position).get("tel"));
-                        intent.putExtra("fax",
-                                arrayList.get(position).get("fax"));
-
-                        context.startActivity(intent);
-
-                    }
-                });
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return result;
+        // Log.d("", result);
+        return null;
 
     }
 
     @Override
     protected void onPostExecute(String result) {
 
-        listView.setAdapter(new ImageAdapterForSearch(context, arrayList));
+        Log.e("xxxx", "size : "+arrayList.size());
+        if(arrayList.size() != 0) {
+            Intent intent = new Intent(context,
+                    DetailGovernment.class);
+
+            intent.putExtra("government_id", arrayList
+                    .get(0).get("government_id"));
+            intent.putExtra("imageDesc", arrayList
+                    .get(0).get("ImageDesc"));
+            intent.putExtra("thai_name", arrayList
+                    .get(0).get("thai_name"));
+            intent.putExtra("location", arrayList.get(0)
+                    .get("location"));
+            intent.putExtra("imagepath", arrayList
+                    .get(0).get("ImagePath"));
+            intent.putExtra("head_agency",
+                    arrayList.get(0).get("head_agency"));
+            intent.putExtra("thai_head_agency",
+                    arrayList.get(0).get("thai_head_agency"));
+            intent.putExtra("offices_hours_start", arrayList
+                    .get(0).get("offices_hours_start"));
+            intent.putExtra(
+                    "offices_hours_end",
+                    arrayList.get(0).get(
+                            "offices_hours_end"));
+            intent.putExtra("latitude", arrayList.get(0)
+                    .get("latitude"));
+            intent.putExtra("longitude", arrayList
+                    .get(0).get("longitude"));
+            intent.putExtra("category_name",
+                    arrayList.get(0)
+                            .get("category_name"));
+            intent.putExtra("thai_category_name",
+                    arrayList.get(0)
+                            .get("thai_category_name"));
+            intent.putExtra("category_image",
+                    arrayList.get(0)
+                            .get("category_image"));
+            intent.putExtra("tel",
+                    arrayList.get(0).get("tel"));
+            intent.putExtra("fax",
+                    arrayList.get(0).get("fax"));
+
+            context.startActivity(intent);
+        }
+
         progressDialog.dismiss();
         super.onPostExecute(result);
     }

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.database.SQLException;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -44,18 +45,26 @@ import com.gose.asyncTask.ImageLoadTaskWithProgressbar;
 import com.gose.asyncTask.ShowEvaluation;
 import com.gose.asyncTask.ShowReview;
 import com.gose.asyncTask.UpdateEvaluation;
+import com.gose.database.DatabaseHelper;
+import com.gose.database.FavoriteGovernmentOffice;
+import com.gose.database.FavoriteGovernmentOfficeData;
 import com.gose.session.UserLogin;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class DetailGovernment extends FragmentActivity implements View.OnClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
     private static final String TAG = DetailGovernment.class.getSimpleName();
 
-	private String governmentName, imgGovernment, location, headAgency,
-			officesHoursStart, officesHoursEnd, latitude, longitude,
-			categoryName, tel, fax, imgCategory, governmentId;
+    private String governmentName, governmentNameThai, imgGovernment, location, headAgency,
+            headAgencyThai, officesHoursStart, officesHoursEnd, latitude, longitude,
+            categoryName, categoryNameThai, tel, fax, imgCategory, governmentId;
+
 	private TextView tv_tel, tv_fax, tv_government, tv_location, tv_head_agency, tv_offices_hours, tv_total_people, tv_evaluation_rate,
             tv_no_review;
     private ImageView img_category, img_government, img_edit_evaluation;
@@ -87,6 +96,9 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
 
     private float rating_evaluation;
     private boolean status_evaluation = false;
+    private ImageView imageView_favorite;
+    private boolean status_favorite = false;
+    private DatabaseHelper databaseHelper;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +107,7 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
 		setContentView(R.layout.detail_government);
 
 		setArguments();
+        databaseHelper = new DatabaseHelper(getApplicationContext());
 
         uiHelper = new UiLifecycleHelper(this, statusCallback);
         uiHelper.onCreate(savedInstanceState);
@@ -180,7 +193,77 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
         img_edit_evaluation.setOnClickListener(this);
         button_evaluation.setOnClickListener(this);
         button_cancel_evaluation.setOnClickListener(this);
-	}
+
+        imageView_favorite = (ImageView) findViewById(R.id.imageView_favorite);
+
+        FavoriteGovernmentOfficeData favoriteGovernmentOfficeData = new FavoriteGovernmentOfficeData();
+        try {
+            List<FavoriteGovernmentOffice> favoriteList = favoriteGovernmentOfficeData.getFavoriteGovernmentOffice(databaseHelper);
+
+            List<String> favoriteNameList = new ArrayList<String>();
+            for (FavoriteGovernmentOffice favorite : favoriteList) {
+                favoriteNameList.add(favorite.government_name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
+        checkFavorite();
+        imageView_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (status_favorite == true) {
+                    imageView_favorite.setImageResource(R.drawable.favorite_icon_off);
+                    status_favorite = false;
+
+                    RuntimeExceptionDao<FavoriteGovernmentOffice, Integer> canteenDao = databaseHelper.getfavoriteGovernmentofficesDao();
+                    DeleteBuilder<FavoriteGovernmentOffice, Integer> deleteBuilder = canteenDao.deleteBuilder();
+                    try {
+                        deleteBuilder.where().eq(FavoriteGovernmentOffice.COLUMN_NAME_GOVERNMENT_ID, governmentId);
+                        canteenDao.delete(deleteBuilder.prepare());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } catch (java.sql.SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    imageView_favorite.setImageResource(R.drawable.favorite_icon);
+                    status_favorite = true;
+
+                    RuntimeExceptionDao<FavoriteGovernmentOffice, Integer> favoriteGovernmentofficesDao = databaseHelper.getfavoriteGovernmentofficesDao();
+                    FavoriteGovernmentOffice favoriteGovernmentoffices = new FavoriteGovernmentOffice(Integer.parseInt(governmentId), governmentName, governmentNameThai);
+                    favoriteGovernmentofficesDao.create(favoriteGovernmentoffices);
+                }
+            }
+        });
+
+    }
+
+    private void checkFavorite(){
+        FavoriteGovernmentOfficeData favoriteGovernmentOfficeData = new FavoriteGovernmentOfficeData();
+        try {
+            List<FavoriteGovernmentOffice> favoriteList = favoriteGovernmentOfficeData.getFavoriteGovernmentOfficeByGovernmentId(databaseHelper, governmentId);
+
+            Log.e(TAG, "favoriteList >>> "+favoriteList+ " | size >>> "+ favoriteList.size());
+
+            if(favoriteList.size() != 0){
+                status_favorite = true;
+                imageView_favorite.setImageResource(R.drawable.favorite_icon);
+            }else {
+                status_favorite = false;
+                imageView_favorite.setImageResource(R.drawable.favorite_icon_off);
+            }
+
+            Log.e(TAG, favoriteList.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void createWriteReviewDialog(){
         if(dialog == null) {
@@ -352,14 +435,17 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
         if (extras != null) {
             governmentId = extras.getString("government_id");
             governmentName = extras.getString("imageDesc");
+            governmentNameThai = extras.getString("thai_name");
             imgGovernment = extras.getString("imagepath").replace(" ", "%20");
             location = extras.getString("location");
             headAgency = extras.getString("head_agency");
+            headAgencyThai = extras.getString("thai_head_agency");
             officesHoursStart = extras.getString("offices_hours_start");
             officesHoursEnd = extras.getString("offices_hours_end");
             latitude = extras.getString("latitude");
             longitude = extras.getString("longitude");
             categoryName = extras.getString("category_name");
+            categoryNameThai = extras.getString("thai_category_name");
             tel = extras.getString("tel");
             fax = extras.getString("fax");
             imgCategory = extras.getString("category_image").replace(" ", "%20");

@@ -2,18 +2,21 @@ package com.gose.asyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Toast;
 
-import com.gose.DetailGovernment;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.gose.R;
-import com.gose.adapters.ImageAdapterForSearch;
 import com.gose.httpclient.JsonFormPost;
+import com.gose.route.GPSTracker;
+import com.gose.route.Navigator;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -26,23 +29,22 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Yuwanit on 2/26/2015.
+ * Created by Yuwanit on 3/18/2015.
  */
-public class GetGovernmentOffice extends AsyncTask<String, Integer, String> {
-
-    private static String TAG = GetGovernmentOffice.class.getSimpleName();
+public class GetGovernmentDistance extends AsyncTask<String, Integer, String> {
 
     private ProgressDialog progressDialog;
     private Context context;
-    private String keyword_search, category_id;
-    private ListView listView;
+    private String keyword_search;
+    private GoogleMap googleMap;
+    private LatLng latLngCurrent;
+    private LatLng latLngDestination;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
 
-    public GetGovernmentOffice(Context context, String keyword_search, String category_id, ListView listView){
+    public GetGovernmentDistance(Context context, String keyword_search, GoogleMap googleMap) {
         this.context = context;
         this.keyword_search = keyword_search;
-        this.category_id = category_id;
-        this.listView = listView;
+        this.googleMap = googleMap;
     }
 
     @Override
@@ -66,8 +68,7 @@ public class GetGovernmentOffice extends AsyncTask<String, Integer, String> {
 
         List<NameValuePair> nameValuePairs = new ArrayList<>();
 
-        nameValuePairs.add(new BasicNameValuePair("category_id", category_id));
-        Log.e(TAG, "category_id >>> " + category_id);
+        nameValuePairs.add(new BasicNameValuePair("category_id", "0"));
         nameValuePairs.add(new BasicNameValuePair("keyword_search", keyword_search));
 
         String result = post.connect(url, nameValuePairs);
@@ -111,72 +112,66 @@ public class GetGovernmentOffice extends AsyncTask<String, Integer, String> {
                                 + jsonObject2.getString("category_image"));
 
                 arrayList.add(hashMap);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> arg0, View arg1,
-                                            int position, long arg3) {
-
-                        Intent intent = new Intent(context,
-                                DetailGovernment.class);
-
-                        intent.putExtra("government_id", arrayList
-                                .get(position).get("government_id"));
-                        intent.putExtra("imageDesc", arrayList
-                                .get(position).get("ImageDesc"));
-                        intent.putExtra("thai_name", arrayList
-                                .get(position).get("thai_name"));
-                        intent.putExtra("location", arrayList.get(position)
-                                .get("location"));
-                        intent.putExtra("imagepath", arrayList
-                                .get(position).get("ImagePath"));
-                        intent.putExtra("head_agency",
-                                arrayList.get(position).get("head_agency"));
-                        intent.putExtra("thai_head_agency",
-                                arrayList.get(position).get("thai_head_agency"));
-                        intent.putExtra("offices_hours_start", arrayList
-                                .get(position).get("offices_hours_start"));
-                        intent.putExtra(
-                                "offices_hours_end",
-                                arrayList.get(position).get(
-                                        "offices_hours_end"));
-                        intent.putExtra("latitude", arrayList.get(position)
-                                .get("latitude"));
-                        intent.putExtra("longitude", arrayList
-                                .get(position).get("longitude"));
-                        intent.putExtra("category_name",
-                                arrayList.get(position)
-                                        .get("category_name"));
-                        intent.putExtra("thai_category_name",
-                                arrayList.get(position)
-                                        .get("thai_category_name"));
-                        intent.putExtra("category_image",
-                                arrayList.get(position)
-                                        .get("category_image"));
-                        intent.putExtra("tel",
-                                arrayList.get(position).get("tel"));
-                        intent.putExtra("fax",
-                                arrayList.get(position).get("fax"));
-
-                        context.startActivity(intent);
-
-                    }
-                });
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return result;
-
     }
 
     @Override
     protected void onPostExecute(String result) {
+        if(arrayList.size() != 0) {
 
-        listView.setAdapter(new ImageAdapterForSearch(context, arrayList));
+            GPSTracker gps = new GPSTracker(context);
+
+            // check if GPS enabled
+            if (gps.canGetLocation()) {
+
+                double latitude = gps.getLatitude();
+                double longitude = gps.getLongitude();
+
+                latLngCurrent = new LatLng(latitude, longitude);
+            } else {
+                // can't get location
+                // GPS or Network is not enabled
+                // Ask user to enable GPS/network in settings
+                gps.showSettingsAlert();
+            }
+
+
+            double latitude = Double.parseDouble(arrayList.get(0).get("latitude"));
+            double longitude = Double.parseDouble(arrayList.get(0).get("longitude"));
+            String governmentName = arrayList.get(0).get("government_name");
+
+            latLngDestination = new LatLng(latitude, longitude);
+
+
+            if (latLngCurrent != null && latLngDestination != null) {
+
+                googleMap.clear();
+
+                CameraUpdate center = CameraUpdateFactory.newLatLng(latLngCurrent);
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+                googleMap.moveCamera(center);
+                googleMap.animateCamera(zoom);
+
+                googleMap.addMarker(new MarkerOptions()
+                        .icon(
+                                BitmapDescriptorFactory.fromResource(R.drawable.goverment_icon))
+                        .position(latLngDestination)
+                        .title(governmentName)).showInfoWindow();
+
+                Navigator nav = new Navigator(googleMap, latLngCurrent, latLngDestination);
+                nav.findDirections(true);
+                nav.setPathColor(Color.parseColor("#f94a32"));
+                nav.setPathBorderColor(Color.parseColor("#ff0000"));
+            } else {
+                Toast.makeText(context, "Can not found your place.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         progressDialog.dismiss();
         super.onPostExecute(result);
     }

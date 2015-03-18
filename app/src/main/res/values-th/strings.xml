@@ -30,4 +30,6 @@
     <string name="no_review">ไม่มีความคิดเห็น</string>
     <string name="open_title">เวลาทำการ :</string>
     <string name="tel_title">เบอร์โทร :</string>
+    <string name="get_distance">คำนวณระยะทาง</string>
+    <string name="more">อ่านเพิ่มเติม</string>
 </resources>

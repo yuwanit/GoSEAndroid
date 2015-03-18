@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
@@ -38,12 +39,16 @@
             android:background="@drawable/rect_text_edit"
             android:gravity="top"/>
 
-        <Button
+        <com.cengalabs.flatui.views.FlatButton
             android:id="@+id/button_post_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_gravity="right"
+            flatui:fl_theme="@array/grape"
+            flatui:fl_customBackgroundColor="#3498db"
+            flatui:fl_touchEffect="fl_ripple"
+            flatui:fl_blockButtonEffectHeight="3dp"
             android:text="@string/post"/>
 
     </LinearLayout>

@@ -143,11 +143,11 @@ public class Navigator {
 	 * Color of the third line, default color is red
 	 * 
 	 */
-	public void setPathColor(int firstPath,int secondPath, int thirdPath){
+	public void setPathColor(int firstPath){
 		pathColor = firstPath;
 	}
 	
-	public void setPathBorderColor(int firstPath,int secondPath, int thirdPath){
+	public void setPathBorderColor(int firstPath){
 		pathBorderColor = firstPath;
 	}
 	

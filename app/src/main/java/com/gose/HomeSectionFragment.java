@@ -83,7 +83,7 @@ public class HomeSectionFragment extends Fragment implements LocationListener {
 
         new GetLocation(getActivity(), inflater, googleMap).execute();
 
-       return view;
+        return view;
     }
 
     public static void setUpMapIfNeeded() {
@@ -101,10 +101,10 @@ public class HomeSectionFragment extends Fragment implements LocationListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (googleMap != null) {
-            MainActivity.fragmentManager.beginTransaction().remove(MainActivity.fragmentManager.findFragmentById(R.id.map)).commit();
-            googleMap = null;
-        }
+//        if (googleMap != null) {
+//            MainActivity.fragmentManager.beginTransaction().remove(MainActivity.fragmentManager.findFragmentById(R.id.map)).commit();
+//            googleMap = null;
+//        }
     }
 
     @Override
