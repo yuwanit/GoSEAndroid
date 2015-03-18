@@ -5,12 +5,10 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -19,6 +17,7 @@ import android.widget.Spinner;
 
 import com.gose.asyncTask.CategorySpinnerSearch;
 import com.gose.asyncTask.GetGovernmentOffice;
+import com.gose.session.GovernmentOffice;
 
 /**
  * Created by Yuwanit on 1/23/2015.
@@ -37,6 +36,7 @@ public class SearchSectionFragment extends Fragment {
 
     private View view;
 
+    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
     private static SearchSectionFragment instance;
 
     public static SearchSectionFragment getInstance() {
@@ -69,7 +69,7 @@ public class SearchSectionFragment extends Fragment {
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetGovernmentOffice(getActivity(), editText_search.getText().toString(), category_id, listView_search).execute();
+                new GetGovernmentOffice(getActivity(), editText_search.getText().toString(), governmentOffice.getCategoryId(), listView_search).execute();
             }
         });
 
@@ -110,19 +110,6 @@ public class SearchSectionFragment extends Fragment {
 
         spinner_category = (Spinner) view.findViewById(R.id.spinner_category);
         new CategorySpinnerSearch(getActivity(), spinner_category).execute();
-
-        spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                category_id = String.valueOf(spinner_category.getItemIdAtPosition(position));
-                Log.e(TAG, "category_id >>> "+category_id);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                spinner_category.setSelection(0);
-            }
-        });
 
         new GetGovernmentOffice(
                 getActivity(),

@@ -12,6 +12,7 @@ public class GovernmentOffice {
     private static GovernmentOffice instance;
     private static ArrayList<HashMap<String, String>> governmentList;
     private static List<String> governmentNameList;
+    private static String categoryId;
 
     private GovernmentOffice(){}
 
@@ -36,5 +37,13 @@ public class GovernmentOffice {
 
     public static void setGovernmentNameList(List<String> governmentNameList) {
         GovernmentOffice.governmentNameList = governmentNameList;
+    }
+
+    public static String getCategoryId() {
+        return categoryId;
+    }
+
+    public static void setCategoryId(String categoryId) {
+        GovernmentOffice.categoryId = categoryId;
     }
 }

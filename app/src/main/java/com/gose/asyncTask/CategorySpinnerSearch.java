@@ -3,10 +3,13 @@ package com.gose.asyncTask;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.gose.httpclient.JsonFormGet;
+import com.gose.session.GovernmentOffice;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,20 +74,36 @@ public class CategorySpinnerSearch extends AsyncTask<String, Integer, String> {
 
     }
 
+    List<String> categoryIdList;
     @Override
     protected void onPostExecute(String s) {
         List<String> categoryNameList = new ArrayList<String>();
+        categoryIdList = new ArrayList<String>();
         categoryNameList.add("All");
         for (int i = 0; i < arrayList.size(); i++){
             categoryNameList.add(arrayList.get(i).get("category_name"));
+            categoryIdList.add(arrayList.get(i).get("category_id"));
         }
 
-        Log.i(TAG, categoryNameList.toString());
+        final GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, categoryNameList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                governmentOffice.setCategoryId(categoryIdList.get(position));
+                Log.e(TAG, "category_id >>> "+(categoryIdList.get(position)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                spinner.setSelection(0);
+            }
+        });
 
         super.onPostExecute(s);
     }
