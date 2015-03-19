@@ -143,13 +143,14 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="2"
                                     android:inputType="number"
+                                    android:drawableLeft="@android:drawable/sym_call_outgoing"
                                     android:textSize="@dimen/dialog_font" />
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="25dp"
-                                    android:layout_toRightOf="@+id/tv_tel"
-                                    android:src="@android:drawable/sym_call_outgoing" />
+                                <!--<ImageView-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="25dp"-->
+                                    <!--android:layout_toRightOf="@+id/tv_tel"-->
+                                    <!--android:src="@android:drawable/sym_call_outgoing" />-->
 
                             </RelativeLayout>
 

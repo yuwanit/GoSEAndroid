@@ -182,6 +182,15 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
             tv_tel.setText("N/A");
         }else {
             tv_tel.setText(tel);
+            tv_tel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel:" + Uri.encode(tel.trim())));
+                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(callIntent);
+                }
+            });
         }
 
         if(fax.equals(null) || fax.equals("")){
@@ -200,16 +209,6 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
         officesHoursStart = officesHoursStart.substring(0, officesHoursStart.length() - 3);
         officesHoursEnd = officesHoursEnd.substring(0, officesHoursEnd.length() - 3);
         tv_offices_hours.setText(officesHoursStart + " - " + officesHoursEnd);
-
-        tv_tel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse("tel:" + Uri.encode(tel.trim())));
-                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(callIntent);
-            }
-        });
 
         new ImageLoadTaskWithProgressbar(imgCategory, img_category, progressBar_img_category).execute();
         new ImageLoadTaskWithProgressbar(imgGovernment, img_government, progressBar_img_government).execute();
@@ -586,6 +585,11 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
                 Intent intentWebsite = new Intent(this, WebsiteActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("url", website);
+                if(language.equals("th")){
+                    bundle.putString("title", governmentNameThai);
+                }else {
+                    bundle.putString("title", governmentName);
+                }
                 intentWebsite.putExtras(bundle);
                 startActivity(intentWebsite);
                 break;
