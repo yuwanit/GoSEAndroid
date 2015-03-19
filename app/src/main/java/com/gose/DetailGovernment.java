@@ -48,6 +48,7 @@ import com.gose.asyncTask.UpdateEvaluation;
 import com.gose.database.DatabaseHelper;
 import com.gose.database.FavoriteGovernmentOffice;
 import com.gose.database.FavoriteGovernmentOfficeData;
+import com.gose.session.GovernmentOffice;
 import com.gose.session.UserLogin;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.DeleteBuilder;
@@ -58,14 +59,15 @@ import java.util.List;
 
 public class DetailGovernment extends FragmentActivity implements View.OnClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
     private static final String TAG = DetailGovernment.class.getSimpleName();
 
-    private String governmentName, governmentNameThai, imgGovernment, location, headAgency,
+    private String governmentName, governmentNameThai, imgGovernment, location, locationThai, headAgency,
             headAgencyThai, officesHoursStart, officesHoursEnd, latitude, longitude,
-            categoryName, categoryNameThai, tel, fax, imgCategory, governmentId;
+            categoryName, categoryNameThai, tel, fax, imgCategory, governmentId, website;
 
     private TextView tv_tel, tv_fax, tv_government, tv_location, tv_head_agency, tv_offices_hours, tv_total_people, tv_evaluation_rate,
-            tv_no_review;
+            tv_no_review, tv_category_name, tv_website;
     private ImageView img_category, img_government, img_edit_evaluation, img_route;
     private ProgressBar progressBar_img_category, progressBar_img_government, progressBar_reviews;
     private SignInButton button_sign_in_google;
@@ -98,6 +100,8 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
     private ImageView imageView_favorite;
     private boolean status_favorite = false;
     private DatabaseHelper databaseHelper;
+    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
+    private String language = governmentOffice.getLanguage();
 
     private Session.StatusCallback statusCallback = new Session.StatusCallback() {
         @Override
@@ -136,9 +140,11 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
         tv_location = (TextView) findViewById(R.id.tv_location);
         tv_head_agency = (TextView) findViewById(R.id.tv_head_agency);
         tv_offices_hours = (TextView) findViewById(R.id.tv_offices_hours);
+        tv_website = (TextView) findViewById(R.id.tv_website);
         tv_evaluation_rate = (TextView) findViewById(R.id.tv_evaluation_rate);
         tv_total_people = (TextView) findViewById(R.id.tv_total_people);
         tv_no_review = (TextView) findViewById(R.id.tv_no_review);
+        tv_category_name = (TextView) findViewById(R.id.tv_category_name);
         img_category = (ImageView) findViewById(R.id.img_category);
         img_government = (ImageView) findViewById(R.id.img_government);
         progressBar_img_category = (ProgressBar) findViewById(R.id.progressBar_img_category);
@@ -160,11 +166,36 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
         button_connect_facebook = (LoginButton) findViewById(R.id.button_connect_facebook);
         button_connect_facebook.setReadPermissions(Arrays.asList("email", "public_profile"));
 
-        tv_government.setText(governmentName);
-        tv_tel.setText(tel);
-        tv_fax.setText(fax);
-        tv_location.setText(location);
-        tv_head_agency.setText(headAgency);
+        if(language.equals("th")){
+            tv_government.setText(governmentNameThai);
+            tv_location.setText(locationThai);
+            tv_head_agency.setText(headAgencyThai);
+            tv_category_name.setText(categoryNameThai);
+        }else {
+            tv_government.setText(governmentName);
+            tv_location.setText(location);
+            tv_head_agency.setText(headAgency);
+            tv_category_name.setText(categoryName);
+        }
+
+        if(tel.equals(null) || tel.equals("")){
+            tv_tel.setText("N/A");
+        }else {
+            tv_tel.setText(tel);
+        }
+
+        if(fax.equals(null) || fax.equals("")){
+            tv_fax.setText("N/A");
+        }else {
+            tv_fax.setText(fax);
+        }
+
+        if(website.equals(null) || website.equals("")){
+            tv_website.setText("N/A");
+        }else {
+            tv_website.setText(website);
+            tv_website.setOnClickListener(this);
+        }
 
         officesHoursStart = officesHoursStart.substring(0, officesHoursStart.length() - 3);
         officesHoursEnd = officesHoursEnd.substring(0, officesHoursEnd.length() - 3);
@@ -413,6 +444,7 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
             governmentNameThai = extras.getString("thai_name");
             imgGovernment = extras.getString("ImagePath").replace(" ", "%20");
             location = extras.getString("location");
+            locationThai = extras.getString("thai_location");
             headAgency = extras.getString("head_agency");
             headAgencyThai = extras.getString("thai_head_agency");
             officesHoursStart = extras.getString("offices_hours_start");
@@ -424,6 +456,7 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
             tel = extras.getString("tel");
             fax = extras.getString("fax");
             imgCategory = extras.getString("category_image").replace(" ", "%20");
+            website = extras.getString("website");
 
             extras.clear();
         }
@@ -445,7 +478,11 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
     @Override
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
-        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+        if(language.equals("th")){
+            Toast.makeText(this, "ผู้ใช้เชื่อมต่อระบบ", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+        }
 
         // Get user's information
         getProfileInformation();
@@ -479,7 +516,11 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
 
                     dialog.dismiss();
                 } else {
-                    et_write_review.setError("Please input your review.");
+                    if(language.equals("th")){
+                        et_write_review.setError("กรุณากรอกความคิดของคุณ");
+                    }else {
+                        et_write_review.setError("Please input your review.");
+                    }
                 }
                 break;
             case R.id.img_edit_evaluation:
@@ -541,6 +582,13 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
 
                 startActivity(intent);
                 break;
+            case R.id.tv_website:
+                Intent intentWebsite = new Intent(this, WebsiteActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("url", website);
+                intentWebsite.putExtras(bundle);
+                startActivity(intentWebsite);
+                break;
 
         }
     }
@@ -570,7 +618,6 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
-
     }
 
     @Override

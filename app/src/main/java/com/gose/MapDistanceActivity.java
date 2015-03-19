@@ -6,9 +6,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.gose.route.GPSTracker;
 import com.gose.route.Navigator;
@@ -31,6 +36,7 @@ public class MapDistanceActivity extends FragmentActivity implements LocationLis
     private static String TAG = MapDistanceActivity.class.getSimpleName();
 
     private GoogleMap googleMap;
+    private Marker mPositionMarker;
     private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
 
     private static RouteSectionFragment instance;
@@ -87,7 +93,24 @@ public class MapDistanceActivity extends FragmentActivity implements LocationLis
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngCurrent));
 
                 // Zoom in the Google Map
-                googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                googleMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+
+                if (location == null)
+                    return;
+
+                if (mPositionMarker == null) {
+
+                    mPositionMarker = googleMap.addMarker(new MarkerOptions()
+                            .flat(true)
+                            .icon(BitmapDescriptorFactory
+                                    .fromResource(R.drawable.car_icon))
+                            .position(latLngCurrent));
+                }
+
+                animateMarker(mPositionMarker, location); // Helper method for smooth
+                // animation
+
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLngCurrent));
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -121,9 +144,15 @@ public class MapDistanceActivity extends FragmentActivity implements LocationLis
             googleMap.clear();
 
             CameraUpdate center = CameraUpdateFactory.newLatLng(latLngCurrent);
-            CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
             googleMap.moveCamera(center);
             googleMap.animateCamera(zoom);
+
+            mPositionMarker = googleMap.addMarker(new MarkerOptions()
+                    .flat(true)
+                    .icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.car_icon))
+                    .position(latLngCurrent));
 
             googleMap.addMarker(new MarkerOptions()
                     .icon(
@@ -133,14 +162,14 @@ public class MapDistanceActivity extends FragmentActivity implements LocationLis
 
             Navigator nav = new Navigator(googleMap, latLngCurrent, latLngDestination);
             nav.findDirections(true);
-            nav.setPathColor(Color.parseColor("#f94a32"));
-            nav.setPathBorderColor(Color.parseColor("#ff0000"));
+            nav.setPathColor(Color.parseColor("#f2a84c"), Color.parseColor("#00ff00"), Color.parseColor("#ff0080"));
+            nav.setPathBorderColor(Color.WHITE);
         } else {
             Toast.makeText(this, "Can not found your place.", Toast.LENGTH_SHORT).show();
         }
 
         CameraUpdate center = CameraUpdateFactory.newLatLng(latLngCurrent);
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
         googleMap.moveCamera(center);
         googleMap.animateCamera(zoom);
     }
@@ -202,8 +231,61 @@ public class MapDistanceActivity extends FragmentActivity implements LocationLis
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLngCurrent));
 
         // Zoom in the Google Map
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+
+        if (location == null)
+            return;
+
+        if (mPositionMarker == null) {
+
+            mPositionMarker = googleMap.addMarker(new MarkerOptions()
+                    .flat(true)
+                    .icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.car_icon))
+                    .position(latLngCurrent));
+        }
+
+        animateMarker(mPositionMarker, location); // Helper method for smooth
+        // animation
+
+        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLngCurrent));
     }
+
+    public void animateMarker(final Marker marker, final Location location) {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        final LatLng startLatLng = marker.getPosition();
+        final double startRotation = marker.getRotation();
+        final long duration = 500;
+
+        final Interpolator interpolator = new LinearInterpolator();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+
+                double lng = t * location.getLongitude() + (1 - t)
+                        * startLatLng.longitude;
+                double lat = t * location.getLatitude() + (1 - t)
+                        * startLatLng.latitude;
+
+                float rotation = (float) (t * location.getBearing() + (1 - t)
+                        * startRotation);
+
+                marker.setPosition(new LatLng(lat, lng));
+                marker.setRotation(rotation);
+
+                if (t < 1.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
+    }
+
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
@@ -222,7 +304,7 @@ public class MapDistanceActivity extends FragmentActivity implements LocationLis
     @Override
     public void onMapLoaded() {
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngCurrent, 13));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngCurrent, 16));
 
         // Flat markers will rotate when the map is rotated,
         // and change perspective when the map is tilted.
@@ -234,7 +316,7 @@ public class MapDistanceActivity extends FragmentActivity implements LocationLis
 
         CameraPosition cameraPosition = CameraPosition.builder()
                 .target(latLngCurrent)
-                .zoom(13)
+                .zoom(16)
                 .bearing(90)
                 .build();
 

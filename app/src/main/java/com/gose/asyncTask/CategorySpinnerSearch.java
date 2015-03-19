@@ -26,6 +26,9 @@ public class CategorySpinnerSearch extends AsyncTask<String, Integer, String> {
 
     private static String TAG = CategorySpinnerSearch.class.getSimpleName();
 
+    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
+    private String language = governmentOffice.getLanguage();
+
     private Context context;
     private Spinner spinner;
 
@@ -79,10 +82,18 @@ public class CategorySpinnerSearch extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String s) {
         List<String> categoryNameList = new ArrayList<String>();
         categoryIdList = new ArrayList<String>();
-        categoryNameList.add("All");
+        if(language.equals("th")){
+            categoryNameList.add("ทั้งหมด");
+        }else {
+            categoryNameList.add("All");
+        }
         categoryIdList.add("0");
         for (int i = 0; i < arrayList.size(); i++){
-            categoryNameList.add(arrayList.get(i).get("category_name"));
+            if(language.equals("th")){
+                categoryNameList.add(arrayList.get(i).get("thai_category_name"));
+            }else {
+                categoryNameList.add(arrayList.get(i).get("category_name"));
+            }
             categoryIdList.add(arrayList.get(i).get("category_id"));
         }
 

@@ -77,6 +77,7 @@ public class FavoriteList extends AsyncTask<String, Integer, String> {
                 hashMap.put("thai_name",
                         jsonObject2.getString("thai_name"));
                 hashMap.put("location", jsonObject2.getString("location"));
+                hashMap.put("thai_location", jsonObject2.getString("thai_location"));
                 hashMap.put("ImagePath",
                         "http://gose.esy.es/administrator/uploads/pic_government/"
                                 + jsonObject2.getString("image"));
@@ -95,9 +96,11 @@ public class FavoriteList extends AsyncTask<String, Integer, String> {
                 hashMap.put("thai_category_name",
                         jsonObject2.getString("thai_category_name"));
                 hashMap.put("tel", jsonObject2.getString("tel"));
+                hashMap.put("fax", jsonObject2.getString("fax"));
                 hashMap.put("category_image",
                         "http://gose.esy.es/administrator/uploads/pic_categories/"
                                 + jsonObject2.getString("category_image"));
+                hashMap.put("website", jsonObject2.getString("website"));
 
                 arrayList.add(hashMap);
             }
@@ -127,7 +130,9 @@ public class FavoriteList extends AsyncTask<String, Integer, String> {
                     .get(0).get("thai_name"));
             intent.putExtra("location", arrayList.get(0)
                     .get("location"));
-            intent.putExtra("imagepath", arrayList
+            intent.putExtra("thai_location", arrayList.get(0)
+                    .get("thai_location"));
+            intent.putExtra("ImagePath", arrayList
                     .get(0).get("ImagePath"));
             intent.putExtra("head_agency",
                     arrayList.get(0).get("head_agency"));
@@ -156,6 +161,8 @@ public class FavoriteList extends AsyncTask<String, Integer, String> {
                     arrayList.get(0).get("tel"));
             intent.putExtra("fax",
                     arrayList.get(0).get("fax"));
+            intent.putExtra("website",
+                    arrayList.get(0).get("website"));
 
             context.startActivity(intent);
         }

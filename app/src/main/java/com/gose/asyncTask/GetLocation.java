@@ -57,8 +57,8 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
     List<String> governmentNameList = new ArrayList<>();
     private Context context;
-    private String tel, government_id, imageDesc,governmentNameThai, location, imagePath, head_agency,thai_head_agency,
-            offices_hours_start, offices_hours_end, latitude, longitude, category_name,thai_category_name, category_image, fax;
+    private String tel, government_id, imageDesc,governmentNameThai, location, locationThai, imagePath, head_agency,thai_head_agency,
+            offices_hours_start, offices_hours_end, latitude, longitude, category_name,thai_category_name, category_image, fax, website;
 
     private static Dialog dialog = null;
     private static GoogleMap googleMap;
@@ -69,6 +69,8 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
     private ImageView imageView_favorite;
     private  boolean status_favorite = false;
     private DatabaseHelper databaseHelper;
+    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
+    private String language = governmentOffice.getLanguage();
 
     public GetLocation(Context context, LayoutInflater inflater, GoogleMap googleMap) {
         this.context = context;
@@ -137,6 +139,7 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                 hashMap.put("thai_name",
                         jsonObject2.getString("thai_name"));
                 hashMap.put("location", jsonObject2.getString("location"));
+                hashMap.put("thai_location", jsonObject2.getString("thai_location"));
                 hashMap.put("ImagePath",
                         "http://gose.esy.es/administrator/uploads/pic_government/"
                                 + jsonObject2.getString("image"));
@@ -155,9 +158,12 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                 hashMap.put("thai_category_name",
                         jsonObject2.getString("thai_category_name"));
                 hashMap.put("tel", jsonObject2.getString("tel"));
+                hashMap.put("fax", jsonObject2.getString("fax"));
                 hashMap.put("category_image",
                         "http://gose.esy.es/administrator/uploads/pic_categories/"
                                 + jsonObject2.getString("category_image"));
+                hashMap.put("website",
+                        jsonObject2.getString("website"));
 
                 arrayList.add(hashMap);
                 governmentNameList.add(jsonObject2.getString("government_name"));
@@ -182,15 +188,28 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
 
         for (int i = 0; i < arrayList.size(); i++) {
 
-            googleMap.addMarker(new MarkerOptions()
-                    .icon(
-                            BitmapDescriptorFactory.fromResource(R.drawable.marker_icon))
-                    .position(
-                            new LatLng(Double.valueOf(arrayList.get(i).get(
-                                    "latitude")), Double.valueOf(arrayList.get(i)
-                                    .get("longitude"))))
-                    .title(
-                            arrayList.get(i).get("ImageDesc")));
+            if(language.equals("th")){
+                googleMap.addMarker(new MarkerOptions()
+                        .icon(
+                                BitmapDescriptorFactory.fromResource(R.drawable.marker_icon))
+                        .position(
+                                new LatLng(Double.valueOf(arrayList.get(i).get(
+                                        "latitude")), Double.valueOf(arrayList.get(i)
+                                        .get("longitude"))))
+                        .title(
+                                arrayList.get(i).get("thai_name")));
+            }else{
+                googleMap.addMarker(new MarkerOptions()
+                        .icon(
+                                BitmapDescriptorFactory.fromResource(R.drawable.marker_icon))
+                        .position(
+                                new LatLng(Double.valueOf(arrayList.get(i).get(
+                                        "latitude")), Double.valueOf(arrayList.get(i)
+                                        .get("longitude"))))
+                        .title(
+                                arrayList.get(i).get("ImageDesc")));
+            }
+
         }
 
         googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -223,7 +242,7 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
 
                 final String title = marker.getTitle();
                 for (int i = 0; i < arrayList.size(); i++) {
-                    if (arrayList.get(i).get("ImageDesc").equals(title)) {
+                    if (arrayList.get(i).get("ImageDesc").equals(title) || arrayList.get(i).get("thai_name").equals(title)) {
 
                         progressBar_img_category = (ProgressBar) dialog.findViewById(R.id.progressBar_img_category);
                         progressBar_img_government = (ProgressBar) dialog.findViewById(R.id.progressBar_img_government);
@@ -233,6 +252,7 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                         TextView tv_location = (TextView) dialog.findViewById(R.id.tv_location);
                         TextView tv_offices_hours = (TextView) dialog.findViewById(R.id.tv_offices_hours);
                         TextView tv_tel = (TextView) dialog.findViewById(R.id.tv_tel);
+                        TextView tv_category_name = (TextView) dialog.findViewById(R.id.tv_category_name);
                         Button btn_read_more = (Button) dialog.findViewById(R.id.btn_read_more);
                         imageView_favorite = (ImageView) dialog.findViewById(R.id.imageView_favorite);
 
@@ -240,6 +260,7 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                         imageDesc = arrayList.get(i).get("ImageDesc");
                         governmentNameThai = arrayList.get(i).get("thai_name");
                         location = arrayList.get(i).get("location");
+                        locationThai = arrayList.get(i).get("thai_location");
                         imagePath = arrayList.get(i).get("ImagePath");
                         head_agency = arrayList.get(i).get("head_agency");
                         thai_head_agency = arrayList.get(i).get("thai_head_agency");
@@ -254,6 +275,7 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                         category_image = arrayList.get(i).get("category_image");
                         tel = arrayList.get(i).get("tel");
                         fax = arrayList.get(i).get("fax");
+                        website = arrayList.get(i).get("website");
 
                         checkFavorite();
                         imageView_favorite.setOnClickListener(new View.OnClickListener() {
@@ -286,10 +308,22 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                             }
                         });
 
-                        tv_government.setText(imageDesc);
-                        tv_location.setText(location);
+                        if(language.equals("th")){
+                            tv_government.setText(governmentNameThai);
+                            tv_location.setText(locationThai);
+                            tv_category_name.setText(thai_category_name);
+                        }else{
+                            tv_government.setText(imageDesc);
+                            tv_location.setText(location);
+                            tv_category_name.setText(category_name);
+                        }
+
                         tv_offices_hours.setText(offices_hours_start_show + " - " + offices_hours_end_show);
-                        tv_tel.setText(tel);
+                        if(tel.equals("")){
+                            tv_tel.setText("N/A");
+                        }else {
+                            tv_tel.setText(tel);
+                        }
 
                         tv_tel.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -317,6 +351,7 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                                 intent.putExtra("imageDesc", imageDesc);
                                 intent.putExtra("thai_name", governmentNameThai);
                                 intent.putExtra("location", location);
+                                intent.putExtra("thai_location", locationThai);
                                 intent.putExtra("ImagePath", imagePath);
                                 intent.putExtra("head_agency", head_agency);
                                 intent.putExtra("thai_head_agency", thai_head_agency);
@@ -329,6 +364,7 @@ public class GetLocation extends AsyncTask<String, Integer, String> {
                                 intent.putExtra("category_image", category_image);
                                 intent.putExtra("tel", tel);
                                 intent.putExtra("fax", fax);
+                                intent.putExtra("website", website);
 
                                 context.startActivity(intent);
                             }

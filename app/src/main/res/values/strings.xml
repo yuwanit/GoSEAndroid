@@ -35,7 +35,7 @@
     <string name="no_review">No Review</string>
     <string name="open_title">Open :</string>
     <string name="tel_title">Tel :</string>
-    <string name="get_distance">Get Distance</string>
+    <string name="get_distance">Get Route</string>
     <string name="more">More information</string>
 
     <integer-array name="custom_theme">
@@ -46,5 +46,6 @@
     </integer-array>
     <string name="title_activity_map_distance">GoSE Navigation</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="favorite_list">Favorite List</string>
+    <string name="title_activity_website">Website Government</string>
 </resources>

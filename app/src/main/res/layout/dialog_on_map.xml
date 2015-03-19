@@ -11,7 +11,7 @@
         android:layout_margin="44dp"
         android:background="@drawable/dialog_goverment"
         android:orientation="vertical"
-        android:paddingTop="15dp"
+        android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
         android:paddingBottom="20dp" >
@@ -24,23 +24,29 @@
 
             <ImageView
                 android:id="@+id/img_category"
-                android:layout_width="160px"
-                android:layout_height="168px"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:visibility="gone"/>
 
             <ProgressBar
                 android:id="@+id/progressBar_img_category"
                 style="?android:attr/progressBarStyleInverse"
-                android:layout_width="160px"
-                android:layout_height="168px"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center" />
 
+            <TextView
+                android:id="@+id/tv_category_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="5pt"
+                android:gravity="center"/>
 
             <ImageView
                 android:id="@+id/img_government"
                 android:layout_width="wrap_content"
-                android:layout_height="400px"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:visibility="gone" />
@@ -49,7 +55,7 @@
                 android:id="@+id/progressBar_img_government"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
-                android:layout_height="400px"
+                android:layout_height="110dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp" />
 
@@ -63,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/dialog_padding"
-                    android:textSize="9pt"
+                    android:textSize="7pt"
                     android:textStyle="bold" />
 
                 <TableRow>

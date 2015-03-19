@@ -3,24 +3,16 @@ package com.gose;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.gose.session.GovernmentOffice;
-
-import java.util.Locale;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -37,23 +29,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static RouteSectionFragment routeSectionFragment = RouteSectionFragment.getInstance();
     public static FavoriteSectionFragment favoriteSectionFragment = FavoriteSectionFragment.getInstance();
 
-    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
-
     ViewPager mViewPager;
-
-    public static SharedPreferences sharedpreferences;
-    public static final String mainPREFERENCES = "mainPrefs";
-    public static final String pref_language = "language";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        sharedpreferences = getSharedPreferences(mainPREFERENCES, Context.MODE_PRIVATE);
-
-        if (sharedpreferences.contains(pref_language)) {
-            governmentOffice.setLanguage(sharedpreferences.getString(pref_language, "en"));
-        }
 
         //Map
         fragmentManager = getSupportFragmentManager();
@@ -187,56 +167,59 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onStop();
     }
 
-    @Override
-     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
+//    @Override
+//     public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_main, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+//
+//        int id = item.getItemId();
+//        Locale locale;
+//        Configuration config;
+//        SharedPreferences.Editor editor = sharedpreferences.edit();
+//
+//        switch (id) {
+//            case R.id.menu_th:
+//                Log.e(TAG, "language thai");
+//                locale = new Locale("th");
+//                Locale.setDefault(locale);
+//                config = new Configuration();
+//                config.locale = locale;
+//                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//
+//                editor.putString(pref_language, "th");
+//                editor.commit();
+//                return true;
+//            case R.id.menu_usa:
+//                Log.e(TAG, "language english");
+//                locale = new Locale("en");
+//                Locale.setDefault(locale);
+//                config = new Configuration();
+//                config.locale = locale;
+//                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//
+//                editor.putString(pref_language, "en");
+//                editor.commit();
+//                return true;
+//            default:
+//                locale = new Locale("en");
+//                Locale.setDefault(locale);
+//                config = new Configuration();
+//                config.locale = locale;
+//                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//
+//                editor.putString(pref_language, "en");
+//                editor.commit();
+//                return true;
+//        }
+//    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
     }
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-
-        int id = item.getItemId();
-        Locale locale;
-        Configuration config;
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-
-        switch (id) {
-            case R.id.menu_th:
-                Log.e(TAG, "language thai");
-                locale = new Locale("th");
-                Locale.setDefault(locale);
-                config = new Configuration();
-                config.locale = locale;
-                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
-                editor.putString(pref_language, "th");
-                editor.commit();
-                return true;
-            case R.id.menu_usa:
-                Log.e(TAG, "language english");
-                locale = new Locale("en");
-                Locale.setDefault(locale);
-                config = new Configuration();
-                config.locale = locale;
-                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
-                editor.putString(pref_language, "en");
-                editor.commit();
-                return true;
-            default:
-                locale = new Locale("en");
-                Locale.setDefault(locale);
-                config = new Configuration();
-                config.locale = locale;
-                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
-                editor.putString(pref_language, "en");
-                editor.commit();
-                return true;
-        }
-    }
-
 
 }

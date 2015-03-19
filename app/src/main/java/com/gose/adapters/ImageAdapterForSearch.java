@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gose.R;
+import com.gose.session.GovernmentOffice;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import java.util.HashMap;
 public class ImageAdapterForSearch extends BaseAdapter {
     private Context context;
     private ArrayList<HashMap<String, String>> arrayList;
+    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
+    private String language = governmentOffice.getLanguage();
 
     public ImageAdapterForSearch(Context c, ArrayList<HashMap<String, String>> list) {
         // TODO Auto-generated method stub
@@ -61,7 +64,12 @@ public class ImageAdapterForSearch extends BaseAdapter {
         TextView txtPicName = (TextView) convertView
                 .findViewById(R.id.government_name);
         txtPicName.setPadding(50, 0, 0, 0);
-        txtPicName.setText(arrayList.get(position).get("ImageDesc"));
+
+        if(language.equals("th")){
+            txtPicName.setText(arrayList.get(position).get("thai_name"));
+        }else {
+            txtPicName.setText(arrayList.get(position).get("ImageDesc"));
+        }
 
         return convertView;
 

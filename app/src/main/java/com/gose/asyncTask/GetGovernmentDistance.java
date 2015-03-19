@@ -89,6 +89,7 @@ public class GetGovernmentDistance extends AsyncTask<String, Integer, String> {
                 hashMap.put("thai_name",
                         jsonObject2.getString("thai_name"));
                 hashMap.put("location", jsonObject2.getString("location"));
+                hashMap.put("thai_location", jsonObject2.getString("thai_location"));
                 hashMap.put("ImagePath",
                         "http://gose.esy.es/administrator/uploads/pic_government/"
                                 + jsonObject2.getString("image"));
@@ -153,9 +154,15 @@ public class GetGovernmentDistance extends AsyncTask<String, Integer, String> {
                 googleMap.clear();
 
                 CameraUpdate center = CameraUpdateFactory.newLatLng(latLngCurrent);
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
                 googleMap.moveCamera(center);
                 googleMap.animateCamera(zoom);
+
+                googleMap.addMarker(new MarkerOptions()
+                        .flat(true)
+                        .icon(BitmapDescriptorFactory
+                                .fromResource(R.drawable.car_icon))
+                        .position(latLngCurrent));
 
                 googleMap.addMarker(new MarkerOptions()
                         .icon(
@@ -165,8 +172,8 @@ public class GetGovernmentDistance extends AsyncTask<String, Integer, String> {
 
                 Navigator nav = new Navigator(googleMap, latLngCurrent, latLngDestination);
                 nav.findDirections(true);
-                nav.setPathColor(Color.parseColor("#f94a32"));
-                nav.setPathBorderColor(Color.parseColor("#ff0000"));
+                nav.setPathColor(Color.parseColor("#f2a84c"), Color.parseColor("#00ff00"), Color.parseColor("#ff0080"));
+                nav.setPathBorderColor(Color.WHITE);
             } else {
                 Toast.makeText(context, "Can not found your place.", Toast.LENGTH_SHORT).show();
             }

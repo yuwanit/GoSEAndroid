@@ -15,6 +15,7 @@ import com.gose.asyncTask.FavoriteList;
 import com.gose.database.DatabaseHelper;
 import com.gose.database.FavoriteGovernmentOffice;
 import com.gose.database.FavoriteGovernmentOfficeData;
+import com.gose.session.GovernmentOffice;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class FavoriteSectionFragment extends Fragment {
 
     private static final String TAG = FavoriteSectionFragment.class.getSimpleName();
     private DatabaseHelper databaseHelper;
+    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
+    private String language = governmentOffice.getLanguage();
     private static ListView listView_favorite;
 
     private  List<Integer> governmentIdList = new ArrayList<Integer>();
@@ -70,9 +73,12 @@ public class FavoriteSectionFragment extends Fragment {
             List<String> favoriteNameList = new ArrayList<String>();
             for(FavoriteGovernmentOffice favorite : favoriteList){
                 if (!favoriteNameList.contains(favorite.government_name)){
-                    favoriteNameList.add(favorite.government_name);
+                    if(language.equals("th")){
+                        favoriteNameList.add(favorite.government_thai_name);
+                    }else {
+                        favoriteNameList.add(favorite.government_name);
+                    }
                     governmentIdList.add(favorite.government_id);}
-
             }
 
             if(favoriteList.size() != 0){

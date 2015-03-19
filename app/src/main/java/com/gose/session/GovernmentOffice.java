@@ -3,6 +3,7 @@ package com.gose.session;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Yuwanit on 3/18/2015.
@@ -13,7 +14,7 @@ public class GovernmentOffice {
     private static ArrayList<HashMap<String, String>> governmentList;
     private static List<String> governmentNameList;
     private static String categoryId;
-    private static String language = "en";
+    private static String language = Locale.getDefault().getLanguage();
 
     private GovernmentOffice(){}
 
@@ -50,9 +51,5 @@ public class GovernmentOffice {
 
     public static String getLanguage() {
         return language;
-    }
-
-    public static void setLanguage(String language) {
-        GovernmentOffice.language = language;
     }
 }
