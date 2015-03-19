@@ -13,6 +13,7 @@ public class GovernmentOffice {
     private static ArrayList<HashMap<String, String>> governmentList;
     private static List<String> governmentNameList;
     private static String categoryId;
+    private static String language = "en";
 
     private GovernmentOffice(){}
 
@@ -45,5 +46,13 @@ public class GovernmentOffice {
 
     public static void setCategoryId(String categoryId) {
         GovernmentOffice.categoryId = categoryId;
+    }
+
+    public static String getLanguage() {
+        return language;
+    }
+
+    public static void setLanguage(String language) {
+        GovernmentOffice.language = language;
     }
 }

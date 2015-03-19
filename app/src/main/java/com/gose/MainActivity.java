@@ -2,6 +2,8 @@ package com.gose;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.gose.session.GovernmentOffice;
 
 import java.util.Locale;
 
@@ -34,11 +37,23 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static RouteSectionFragment routeSectionFragment = RouteSectionFragment.getInstance();
     public static FavoriteSectionFragment favoriteSectionFragment = FavoriteSectionFragment.getInstance();
 
+    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
+
     ViewPager mViewPager;
+
+    public static SharedPreferences sharedpreferences;
+    public static final String mainPREFERENCES = "mainPrefs";
+    public static final String pref_language = "language";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedpreferences = getSharedPreferences(mainPREFERENCES, Context.MODE_PRIVATE);
+
+        if (sharedpreferences.contains(pref_language)) {
+            governmentOffice.setLanguage(sharedpreferences.getString(pref_language, "en"));
+        }
 
         //Map
         fragmentManager = getSupportFragmentManager();
@@ -185,6 +200,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         int id = item.getItemId();
         Locale locale;
         Configuration config;
+        SharedPreferences.Editor editor = sharedpreferences.edit();
 
         switch (id) {
             case R.id.menu_th:
@@ -193,7 +209,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 Locale.setDefault(locale);
                 config = new Configuration();
                 config.locale = locale;
-                getBaseContext().getResources().updateConfiguration(config, null);
+                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+                editor.putString(pref_language, "th");
+                editor.commit();
                 return true;
             case R.id.menu_usa:
                 Log.e(TAG, "language english");
@@ -201,15 +220,23 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 Locale.setDefault(locale);
                 config = new Configuration();
                 config.locale = locale;
-                getResources().updateConfiguration(config, null);
+                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+                editor.putString(pref_language, "en");
+                editor.commit();
                 return true;
             default:
                 locale = new Locale("en");
                 Locale.setDefault(locale);
                 config = new Configuration();
                 config.locale = locale;
-                getResources().updateConfiguration(config, null);
+                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+                editor.putString(pref_language, "en");
+                editor.commit();
                 return true;
         }
     }
+
+
 }
