@@ -17,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,6 +42,7 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.gose.asyncTask.AddEvaluation;
 import com.gose.asyncTask.AddReview;
+import com.gose.asyncTask.AddReviewLike;
 import com.gose.asyncTask.ImageLoadTaskWithProgressbar;
 import com.gose.asyncTask.ShowEvaluation;
 import com.gose.asyncTask.ShowReview;
@@ -631,7 +633,6 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
             mGoogleApiClient.disconnect();
         }
         stopAsyTask();
-        stopAsyTask();
     }
 
     private void stopAsyTask() {
@@ -639,7 +640,7 @@ public class DetailGovernment extends FragmentActivity implements View.OnClickLi
         showReview.cancel(true);
         ImageLoadTaskWithProgressbar imageLoadTaskWithProgressbar = new ImageLoadTaskWithProgressbar();
         imageLoadTaskWithProgressbar.cancel(true);
-        finish();
+//        finish();
     }
 
     private void updateUI(boolean isSignedIn) {

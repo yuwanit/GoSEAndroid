@@ -9,6 +9,7 @@
             android:id="@+id/img_user"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/test_user"/>
 
         <TextView
@@ -36,13 +37,15 @@
             android:layout_marginTop="20dp"
             tools:ignore="RtlCompat" />
 
-        <ImageButton
-            android:id="@+id/button_yes"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:layout_below="@+id/tv_show_review"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/yes"
-            tools:ignore="RtlCompat" />
+    <LinearLayout
+        android:id="@+id/linear_yes_layout"
+        android:layout_width="60dp"
+        android:layout_height="16dp"
+        android:layout_below="@+id/tv_show_review"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        tools:ignore="RtlCompat">
 
+    </LinearLayout>
 </RelativeLayout>

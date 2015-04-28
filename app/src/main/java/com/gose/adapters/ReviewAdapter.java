@@ -5,10 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gose.R;
+import com.gose.asyncTask.AddReviewLike;
+import com.gose.session.UserLogin;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ import java.util.HashMap;
 public class ReviewAdapter extends BaseAdapter {
 
     private static final String TAG = ReviewAdapter.class.getSimpleName();
+    private UserLogin sessionUser = UserLogin.getInstance();
 
     private Context context;
     private ArrayList<HashMap<String, String>> arrayList;
@@ -65,8 +70,8 @@ public class ReviewAdapter extends BaseAdapter {
         TextView tv_show_review = (TextView) convertView
                 .findViewById(R.id.tv_show_review);
 
-        String review_id = arrayList.get(position).get("review_id");
-        String user_id = arrayList.get(position).get("user_id");
+        final String review_id = arrayList.get(position).get("review_id");
+        final String user_id = arrayList.get(position).get("user_id");
         String user_img = arrayList.get(position).get("user_img");
         String user_name = arrayList.get(position).get("user_name");
         String review = arrayList.get(position).get("review");
@@ -77,6 +82,18 @@ public class ReviewAdapter extends BaseAdapter {
         tv_username.setText(user_name);
         tv_date.setText(create_date);
         tv_show_review.setText(review);
+
+        LinearLayout linear_yes_layout = (LinearLayout) convertView.findViewById(R.id.linear_yes_layout);
+        ImageButton button_yes = new ImageButton(context);
+        button_yes.setBackgroundResource(R.drawable.agree);
+
+        linear_yes_layout.addView(button_yes);
+        button_yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddReviewLike(context, review_id, sessionUser.getUserId()).execute();
+            }
+        });
 
         return convertView;
     }

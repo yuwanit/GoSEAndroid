@@ -3,7 +3,12 @@ package com.gose.asyncTask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -17,6 +22,7 @@ import com.gose.R;
 import com.gose.httpclient.JsonFormPost;
 import com.gose.route.GPSTracker;
 import com.gose.route.Navigator;
+import com.gose.session.GovernmentOffice;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -40,6 +46,8 @@ public class GetGovernmentDistance extends AsyncTask<String, Integer, String> {
     private LatLng latLngCurrent;
     private LatLng latLngDestination;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
+    private GovernmentOffice governmentOffice = GovernmentOffice.getInstance();
+    private String language = governmentOffice.getLanguage();
 
     public GetGovernmentDistance(Context context, String keyword_search, GoogleMap googleMap) {
         this.context = context;
@@ -144,7 +152,13 @@ public class GetGovernmentDistance extends AsyncTask<String, Integer, String> {
 
             double latitude = Double.parseDouble(arrayList.get(0).get("latitude"));
             double longitude = Double.parseDouble(arrayList.get(0).get("longitude"));
-            String governmentName = arrayList.get(0).get("government_name");
+            String governmentName = null;
+            if(language.equals("th")){
+                governmentName = arrayList.get(0).get("government_name");
+            }else{
+                governmentName = arrayList.get(0).get("thai_name");
+            }
+
 
             latLngDestination = new LatLng(latitude, longitude);
 
@@ -166,7 +180,7 @@ public class GetGovernmentDistance extends AsyncTask<String, Integer, String> {
 
                 googleMap.addMarker(new MarkerOptions()
                         .icon(
-                                BitmapDescriptorFactory.fromResource(R.drawable.goverment_icon))
+                                BitmapDescriptorFactory.fromBitmap(ProcessingBitmap(governmentName)))
                         .position(latLngDestination)
                         .title(governmentName)).showInfoWindow();
 
@@ -181,5 +195,39 @@ public class GetGovernmentDistance extends AsyncTask<String, Integer, String> {
 
         progressDialog.dismiss();
         super.onPostExecute(result);
+    }
+
+    private Bitmap ProcessingBitmap(String captionString) {
+        Bitmap bm1 = null;
+        Bitmap newBitmap = null;
+
+        if (captionString != null) {
+
+            bm1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker_icon);
+
+            Bitmap.Config config = bm1.getConfig();
+            if (config == null) {
+                config = Bitmap.Config.ARGB_8888;
+            }
+
+            Paint paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paintText.setColor(Color.BLACK);
+            paintText.setTextSize(30);
+            paintText.setStyle(Paint.Style.FILL);
+            paintText.setShadowLayer(10f, 10f, 10f, Color.BLACK);
+
+            Rect rectText = new Rect();
+            paintText.getTextBounds(captionString, 0, captionString.length(), rectText);
+
+            newBitmap = Bitmap.createBitmap(rectText.width()+4, bm1.getHeight(), config);
+            Canvas newCanvas = new Canvas(newBitmap);
+
+            newCanvas.drawBitmap(bm1, rectText.width()/2, 0, null);
+
+            newCanvas.drawText(captionString,
+                    0, rectText.height(), paintText);
+        }
+
+        return newBitmap;
     }
 }

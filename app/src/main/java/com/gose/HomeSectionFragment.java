@@ -105,6 +105,12 @@ public class HomeSectionFragment extends Fragment implements LocationListener {
 //            MainActivity.fragmentManager.beginTransaction().remove(MainActivity.fragmentManager.findFragmentById(R.id.map)).commit();
 //            googleMap = null;
 //        }
+        if (view != null) {
+            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+            if (parentViewGroup != null) {
+                parentViewGroup.removeAllViews();
+            }
+        }
     }
 
     @Override
